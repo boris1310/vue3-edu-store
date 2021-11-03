@@ -38,9 +38,12 @@
             <div class="text-danger my-1" v-else>Введите корректный телефон</div>
         </div>
         <div class="col-12 d-flex justify-content-end">
-            <button type="submit" class="btn btn-success">
+            <button v-if="buttonSubmit" type="submit" class="btn btn-success">
             Place Order
             </button>
+          <button v-else type="submit" class="btn btn-success" disabled>
+            Place Order
+          </button>
         </div>
         </form>
 </template>
@@ -62,61 +65,9 @@ export default ({
         validAdr:true,
         validEmail: true,
         validPhone: true,
+        buttonSubmit: false,
     }),
     methods: {
-      validateFn() {
-        if (this.firstName.length < 3) {
-          this.validFn = false;
-        }else if(this.firstName.length > 20){
-          this.validFn = false;
-        } else {
-          this.validFn=true;
-        }
-      },
-      validateLn() {
-        if (this.lastName.length < 3) {
-          this.validLn = false;
-        }else if(this.lastName.length > 20){
-          this.validLn = false;
-        } else {
-          this.validLn=true;
-        }
-      },
-      validateCity() {
-        if (this.city.length < 3) {
-          this.validCity = false;
-        }else if(this.city.length > 10){
-          this.validCity = false;
-        } else {
-          this.validCity=true;
-        }
-      },
-      validateAdr() {
-        if (this.address.length < 5) {
-          this.validAdr = false;
-        } else if (this.address.length > 40) {
-          this.validAdr = false;
-        } else {
-          this.validAdr = true;
-        }
-      },
-      validateEmail(){
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if(re.test(String(this.email).toLowerCase())){
-          this.validEmail = true;
-        }else{
-          this.validEmail = false;
-        }
-      },
-      validatePhone(){
-        const re = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/;
-        if(re.test(String(this.phone))){
-          this.validPhone = true;
-        }else{
-          this.validPhone = false;
-        }
-      },
-
         onSubmit(e) {
             e.preventDefault()
             console.log('firstName: '+this.firstName)
@@ -129,6 +80,79 @@ export default ({
         }
     },
   watch:{
+    firstName(newValue){
+      this.validFn = true;
+      if(newValue.length<3){
+        this.validFn=false;
+        this.buttonSubmit=false;
+      }else if(newValue.length>10){
+        this.validFn=false;
+        this.buttonSubmit=false;
+      }else{
+        this.buttonSubmit=true;
+      }
+    },
+    lastName(newValue){
+      this.validLn = true;
+      if(newValue.length<3){
+        this.validLn=false;
+        this.buttonSubmit=false;
+      }else if(newValue.length>10){
+        this.validLn=false;
+        this.buttonSubmit=false;
+      }else{
+        this.buttonSubmit=true;
+      }
+    },
+    city(newValue){
+      this.validCity= true;
+      if(newValue.length < 3){
+        this.validCity= false;
+        this.buttonSubmit=false;
+      }else if(newValue.length>20){
+        this.validCity= false;
+        this.buttonSubmit=false;
+      }else{
+        this.buttonSubmit=true;
+      }
+    },
+    address(newValue){
+      this.validAdr= true;
+      this.buttonSubmit=false;
+      if(newValue.length<5){
+        this.validAdr= false;
+        this.buttonSubmit=false;
+      }else if(newValue.length>30){
+        this.validAdr=false;
+        this.buttonSubmit=false;
+      }else{
+        this.buttonSubmit=true;
+      }
+    },
+    email(newValue){
+      this.validEmail= true;
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      if(re.test(String(newValue).toLowerCase())){
+        this.validEmail = true;
+        this.buttonSubmit=true;
+      }else{
+        this.validEmail = false;
+        this.buttonSubmit=false;
+      }
+    },
+    phone(newValue){
+      this.validPhone = true;
+      this.buttonSubmit=false;
+      const re = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/;
+      if(re.test(String(newValue))){
+        this.validPhone = true;
+        this.buttonSubmit=true;
+      }else{
+        this.validPhone = false;
+        this.buttonSubmit=false;
+      }
+    },
 
   }
 })

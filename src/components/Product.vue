@@ -1,7 +1,9 @@
 <template>
-    <div class="col-md-6 col-lg-4 py-3">
+    <div class="col-md-6 col-lg-4 py-3 d-flex">
         <div class="card py-3">
+          <div style="height: 400px;">
         <img class="card-img-top" v-bind:src="image" alt="macbook-pro">
+          </div>
         <div class="card-body">
             <h5 class="card-title">
                 {{ title }}
